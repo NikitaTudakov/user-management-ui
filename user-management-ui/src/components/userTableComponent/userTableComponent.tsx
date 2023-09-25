@@ -25,7 +25,6 @@ const UserTableComponent = () => {
 
     // open delete dialog window
     const openDeleteDialog = (user: User) => {
-      console.log('here')
       setSelectedUser(user);
       setIsDeleteDialogOpen(true);
     };
@@ -35,7 +34,7 @@ const UserTableComponent = () => {
   const getTableUsers = () => {
     getUsers()
       .then((data) => {
-        const sortedUsers = data.sort((a: User, b: User) => a.id - b.id);
+        const sortedUsers = data.sort((a: User, b: User) => a.name.localeCompare(b.name));
         setUsers(sortedUsers)
       })
       .catch((error) => console.error('Error fetching users:', error));
@@ -63,9 +62,9 @@ const UserTableComponent = () => {
                       <Button variant="outlined" onClick={() => openDialog(null)}>Add User</Button>
                     </TableCell>
                 </TableRow>
-              {users.map((user) => (
+              {users.map((user, index) => (
                 <TableRow key={user.id}>
-                  <TableCell>{user.id}</TableCell>
+                  <TableCell>{index+1}</TableCell>
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.surname}</TableCell>
                   <TableCell>{user.age}</TableCell>
