@@ -1,0 +1,39 @@
+@import '../../styles/colors.scss';
+
+#table-container {
+    padding: 150px 100px;
+
+    td,th {
+        text-align: center;
+        cursor: default;
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+}
+
+#table {
+    &__head-row th {
+        text-transform: capitalize;
+        font-weight: 600;
+        font-size: 14px;
+        background-color: $main-gray;
+        color: $main-white;
+    }
+
+    &__action-row td {
+        padding: 7px 16px;
+    }
+}
+
+#table__action-cell {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+
+    &__delete-btn {
+        background-color: $main-red;
+    }
+}
+

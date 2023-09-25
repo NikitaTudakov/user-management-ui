@@ -1,0 +1,24 @@
+@import './styles/colors.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: $secondary-gray;
+  color: $main-gray;
+}
+
+a {
+  text-decoration: none;
+  color: $main-blue; /* Set your desired link color */
+}
+
+a:hover {
+  text-decoration: underline;
+}
