@@ -1,8 +1,21 @@
 @import '../../styles/colors.scss';
 
-#table-container {
-    padding: 150px 100px;
+.wrapper {
+    padding: 50px 100px
+}
 
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 100px;
+
+    h1 {
+        margin: 0;
+    }
+}
+
+#table-container {
     td,th {
         text-align: center;
         cursor: default;
