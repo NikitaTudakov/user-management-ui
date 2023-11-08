@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
-import { getUsers } from '../../api';
 import { User } from '../../interfaces/users';
 import './userTableComponent.scss'
 import UserDialog from '../userDialog/userDialogComponent';
 import DeleteDialog from '../deleteDIalog/deleteDialogComponent';
 import { useNavigate } from 'react-router-dom';
+import { getUsers } from '../../services/users';
 
 const UserTableComponent = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -50,7 +50,7 @@ const UserTableComponent = () => {
     <div className='wrapper'>
       <div className='header'>
         <h1>Users</h1>
-        <Button variant='outlined' onClick={() => onLogout()}>Logout</Button>
+        <Button variant='outlined' onClick={() => onLogout()}>Log out</Button>
       </div>
       <div id='table-container'>
           <TableContainer component={Paper}>

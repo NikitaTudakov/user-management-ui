@@ -1,12 +1,11 @@
-import axios from 'axios';
-import { User } from './interfaces/users';
+import { User } from '../interfaces/users';
+import api, { apiSetHeader } from './api'
 
-const API_URL = 'http://localhost:3000'; 
 
 // get all users
 export const getUsers = async () => {
     try {
-        const response = await axios.get(`${API_URL}/users`);
+        const response = await api.get(`/users`);
         return response.data;
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -16,7 +15,7 @@ export const getUsers = async () => {
 // create new user
 export const createUser = async (user:User) => {
     try {
-        const response = await axios.post(`${API_URL}/users`, user);
+        const response = await api.post(`/users`, user);
         return response.data;
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -26,7 +25,7 @@ export const createUser = async (user:User) => {
 // update user by id
 export const updateUser = async (userId:string, user:User) => {
     try {
-        const response = await axios.put(`${API_URL}/users/${userId}`, user);
+        const response = await api.put(`/users/${userId}`, user);
         return response.data;
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -36,9 +35,11 @@ export const updateUser = async (userId:string, user:User) => {
 // delete user by id
 export const deleteUser = async (userId:string) => {
     try {
-        const response = await axios.delete(`${API_URL}/users/${userId}`);
+        const response = await api.delete(`/users/${userId}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching users:', error);
     }
 };
+
+

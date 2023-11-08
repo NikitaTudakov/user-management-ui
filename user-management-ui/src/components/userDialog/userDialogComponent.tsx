@@ -1,11 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 
 import { User } from '../../interfaces/users';
-import { updateUser,createUser } from '../../api';
 
 import './userDialogComponent.scss';
+import UserFormComponent from '../userForm/userFormComponent';
+import { createUser, updateUser } from '../../services/users';
 
 interface UserDialogProps {
     isOpen: boolean;
@@ -16,6 +17,10 @@ interface UserDialogProps {
 const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
     const [userData, setUserData] = useState<Partial<User> | null>(user);
     const [isFormValid, setIsFormValid] = useState(false);
+    
+    useEffect(() => {
+        validateForm();
+    }, [userData]);
 
     // save user to db
     const handleSave = async () => {
@@ -29,7 +34,10 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
 
     // validate form
     const validateForm = () => {
-        if (userData?.name && userData?.surname && userData?.age && userData?.phoneNumber && userData?.email) {
+        if (
+            userData?.login && userData?.password && userData?.name &&
+            userData?.surname && userData?.age && userData?.phoneNumber && userData?.email
+        ) {
           setIsFormValid(true);
         } else {
           setIsFormValid(false);
@@ -40,62 +48,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
         <Dialog open={isOpen} onClose={onClose}>
             <DialogTitle>{user ? 'Edit User' : 'Add User'}</DialogTitle>
             <DialogContent className='dialog-form' style={{ paddingTop: '10px'}}>
-                <TextField
-                    className='dialog-form__input'
-                    label="Name"
-                    variant="outlined"
-                    fullWidth
-                    value={userData?.name || ''}
-                    onChange={(e) => {
-                        setUserData({ ...userData, name: e.target.value });
-                        validateForm();
-                    }}
-                />
-                <TextField
-                    className='dialog-form__input'
-                    label="Surname"
-                    variant="outlined"
-                    fullWidth
-                    value={userData?.surname || ''}
-                    onChange={(e) => {
-                        setUserData({ ...userData, surname: e.target.value });
-                        validateForm();
-                    }}
-                />
-                <TextField
-                    className='dialog-form__input'
-                    label="Age"
-                    variant="outlined"
-                    fullWidth
-                    value={userData?.age || 0}
-                    inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                    onChange={(e) => {
-                        setUserData({ ...userData, age: parseInt(e.target.value) });
-                        validateForm();
-                    }}
-                />
-                <TextField
-                    className='dialog-form__input'
-                    label="Phone Number"
-                    variant="outlined"
-                    fullWidth
-                    value={userData?.phoneNumber || ''}
-                    onChange={(e) => {
-                        setUserData({ ...userData, phoneNumber: e.target.value });
-                        validateForm();
-                    }}
-                />
-                <TextField
-                    className='dialog-form__input'
-                    label="Email"
-                    variant="outlined"
-                    fullWidth
-                    value={userData?.email || ''}
-                    onChange={(e) => {
-                        setUserData({ ...userData, email: e.target.value });
-                        validateForm();
-                    }}
-                />
+                <UserFormComponent userData={userData} updateUserData={setUserData} />
             </DialogContent>
             <DialogActions id="dialog__actions">
                 <Button onClick={onClose} color="primary">

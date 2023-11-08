@@ -4,7 +4,7 @@ import { Button, Dialog, DialogTitle, DialogContent, DialogActions, DialogConten
 
 import { User } from '../../interfaces/users';
 import './deleteDialogComponent.scss';
-import { deleteUser } from '../../api';
+import { deleteUser } from '../../services/users';
 
 interface UserDialogProps {
     isOpen: boolean;
@@ -16,7 +16,7 @@ const DeleteDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
 
     // save user to db
     const handleDeleteUser = async () => {
-        await deleteUser(user.id)
+        await deleteUser(user.id!)
         onClose();
     };
 
