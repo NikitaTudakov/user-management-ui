@@ -31,25 +31,16 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
 
     //handle login function
     const handleLogin = () => {
-        login(loginData).then((accessToken: string) => {
-            if(!!accessToken) {
-                onAuthenticationSuccess(true);
-                navigate('/overview')
-            } else {
-                onAuthenticationSuccess(false);
-            }
+        login(loginData).then((isLogin: boolean) => {
+            onAuthenticationSuccess(isLogin);
+            isLogin && navigate('/overview')
         })
     };
 
     const handleRegister = () => {
-        register(userData).then((accessToken: string) => {
-            if(!!accessToken) {
-                localStorage.setItem('accessToken', accessToken);
-                onAuthenticationSuccess(true);
-                navigate('/overview')
-            } else {
-                onAuthenticationSuccess(false);
-            }
+        register(userData).then((isLogin: boolean) => {
+            onAuthenticationSuccess(isLogin);
+            isLogin && navigate('/overview')
         })
     };
 
@@ -98,7 +89,6 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
     }
 
     const handleLoginInputChanges = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        console.log(e.target.name)
         setLoginData({ ...loginData, [e.target.name]: e.target.value });
         validateLoginForm();
     }

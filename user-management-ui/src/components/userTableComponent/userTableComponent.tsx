@@ -43,6 +43,7 @@ const UserTableComponent = () => {
 
   // logout function
   const onLogout = () => {
+    localStorage.removeItem('accessToken');
     navigate('/login')
   }
 

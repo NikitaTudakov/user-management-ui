@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-const JWTToken = localStorage.getItem('jwt');
 const baseURL = 'http://localhost:3001'; 
 
 
@@ -12,16 +11,12 @@ export function apiSetHeader (name: string, value: string) {
   }
 };
 
-if (JWTToken) {
-  apiSetHeader('Authorization', `Bearer ${JWTToken}`);
-}
 
 api.interceptors.request.use(config => {
-    // Если пользователь делает запрос и у него нет заголовка с токеном, то...
-    if (!config.headers['Authorization']) {
-        // Тут пишем редирект если не авторизован
+    const accessToken = localStorage.getItem('accessToken');
+    if(accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
     }
-
     return config;
 }, error => {
     return Promise.reject(error);

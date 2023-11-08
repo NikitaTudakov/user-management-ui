@@ -6,11 +6,17 @@ import api, { apiSetHeader } from './api'
 export const login = async (loginData: LoginForm) => {
     try {
         const response = await api.post(`/auth/login`, loginData);
-        localStorage.setItem('jwt', response.data.accessToken);
-        apiSetHeader('Authorization', `Bearer ${response.data.accessToken}`);
-        return response.data;
+        if(response.data?.accessToken) {
+            localStorage.setItem('accessToken', response.data.accessToken);
+            apiSetHeader('Authorization', `Bearer ${response.data.accessToken}`);
+            return true
+        } else {
+            return false
+        }
     } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error during login:', error);
+        return false
+
     }
 }
 
@@ -18,8 +24,25 @@ export const login = async (loginData: LoginForm) => {
 export const register = async (user:User) => {
     try {
         const response = await api.post(`/auth/register`, user);
-        return response.data;
+        if(response.data?.accessToken) {
+            localStorage.setItem('accessToken', response.data.accessToken);
+            apiSetHeader('Authorization', `Bearer ${response.data.accessToken}`);
+            return true
+        } else {
+            return false
+        }
     } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error during registartion:', error);
+        return false
+    }
+}
+
+export const isValidToken = async (accessToken:string) => {
+    try {
+        const response = await api.post(`/auth/validation`, {accessToken});
+        return response.data
+    } catch (error) {
+        console.error('Error during token validation:', error);
+        return false
     }
 }

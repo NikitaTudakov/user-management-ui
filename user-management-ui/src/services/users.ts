@@ -15,10 +15,10 @@ export const getUsers = async () => {
 // create new user
 export const createUser = async (user:User) => {
     try {
-        const response = await api.post(`/users`, user);
+        const response = await api.post(`/users/new-user`, user);
         return response.data;
     } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error while creating user:', error);
     }
 };
 
@@ -28,7 +28,7 @@ export const updateUser = async (userId:string, user:User) => {
         const response = await api.put(`/users/${userId}`, user);
         return response.data;
     } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error while updateing user data:', error);
     }
 };
 
@@ -38,7 +38,7 @@ export const deleteUser = async (userId:string) => {
         const response = await api.delete(`/users/${userId}`);
         return response.data;
     } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error while deleting user:', error);
     }
 };
 
