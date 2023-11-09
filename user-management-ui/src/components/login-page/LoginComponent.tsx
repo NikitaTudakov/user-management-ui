@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import './LoginComponent.scss';
-import { User } from '../../interfaces/users';
+import { NewUser, User } from '../../interfaces/users';
 import { LoginForm } from '../../interfaces/loginForm';
 import { login, register } from '../../services/login';
+import UserFormComponent from '../userForm/userFormComponent';
 
 interface LoginComponentProps {
     onAuthenticationSuccess: (result: boolean) => void;
@@ -18,7 +19,7 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
         login: '',
         password: ''
     });
-    const [userData, setUserData] = useState<User>({
+    const [userData, setUserData] = useState<NewUser>({
         login: '',
         password: '',
         name: '',
@@ -46,7 +47,7 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
 
     const validateRegisterForm = () => {
         for(let key in userData) {
-            if(!userData[key as keyof User]) {
+            if(!userData[key as keyof NewUser]) {
                 setIsRegisterFormValid(false);
                 return;
             }
@@ -83,8 +84,8 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
         setIsLoginFormValid(false);
     }
 
-    const handleRegisterInputChanges = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setUserData({ ...userData, [e.target.name]: e.target.value });
+    const handleRegisterInputChanges = (userData: NewUser | User) => {
+        setUserData({...userData as NewUser});
         validateRegisterForm();
     }
 
@@ -100,8 +101,7 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
 
 
                 {isLoginState ?
-                    <>
-                        <TextField
+                    <><TextField
                             label="Login"
                             variant="outlined"
                             value={loginData.login}
@@ -115,66 +115,13 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
                             value={loginData.password}
                             name='password'
                             onChange={(e) => handleLoginInputChanges(e)}
-                        />
-                    </> :
-                    <>
-                        <TextField
-                            label="Login"
-                            variant="outlined"
-                            value={userData.login}
-                            name='login'
-                            onChange={(e) => handleRegisterInputChanges(e)}
-                        />
-                        <TextField
-                            label="Password"
-                            type="password"
-                            variant="outlined"
-                            value={userData.password}
-                            name='password'
-                            onChange={(e) => handleRegisterInputChanges(e)}
-                        />
-                        <TextField
-                            label='Name'
-                            variant='outlined'
-                            fullWidth
-                            value={userData.name}
-                            name='name'
-                            onChange={(e) => handleRegisterInputChanges(e)}
-                        />
-                        <TextField
-                            label='Surname'
-                            variant='outlined'
-                            fullWidth
-                            value={userData.surname}
-                            name='surname'
-                            onChange={(e) => handleRegisterInputChanges(e)}
-                        />
-                        <TextField
-                            label='Age'
-                            variant='outlined'
-                            fullWidth
-                            value={userData.age}
-                            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-                            name='age'
-                            onChange={(e) => handleRegisterInputChanges(e)}
-                        />
-                        <TextField
-                            label='Phone Number'
-                            variant='outlined'
-                            fullWidth
-                            value={userData.phoneNumber}
-                            name='phoneNumber'
-                            onChange={(e) => handleRegisterInputChanges(e)}
-                        />
-                        <TextField
-                            label='Email'
-                            variant='outlined'
-                            fullWidth
-                            value={userData.email}
-                            name='email'
-                            onChange={(e) => handleRegisterInputChanges(e)}
-                        />
-                    </>  
+                        /></> 
+                    :
+                        <><UserFormComponent
+                            userData={userData}
+                            updateUserData={handleRegisterInputChanges}
+                            isEdit={false}
+                        /></>  
                 }
                 <div className='login-form__actions'>
                     {isLoginState ? 

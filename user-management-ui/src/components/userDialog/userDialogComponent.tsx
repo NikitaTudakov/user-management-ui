@@ -1,8 +1,8 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 
-import { User } from '../../interfaces/users';
+import { NewUser, User } from '../../interfaces/users';
 
 import './userDialogComponent.scss';
 import UserFormComponent from '../userForm/userFormComponent';
@@ -15,12 +15,18 @@ interface UserDialogProps {
 }
 
 const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
-    const [userData, setUserData] = useState<Partial<User> | null>(user);
-    const [isFormValid, setIsFormValid] = useState(false);
+    const [userData, setUserData] = useState<User | NewUser>(user ?? {
+        login: '',
+        password: '',
+        name: '',
+        surname: '',
+        age: 0,
+        phoneNumber: '',
+        email: '',
     
-    useEffect(() => {
-        validateForm();
-    }, [userData]);
+    });
+    const [isFormValid, setIsFormValid] = useState(false);
+    const isEdit = !!user;
 
     // save user to db
     const handleSave = async () => {
@@ -34,21 +40,25 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
 
     // validate form
     const validateForm = () => {
-        if (
-            userData?.login && userData?.password && userData?.name &&
-            userData?.surname && userData?.age && userData?.phoneNumber && userData?.email
-        ) {
-          setIsFormValid(true);
-        } else {
-          setIsFormValid(false);
+        for(let prop in userData) {
+            if(!userData[prop as keyof (User | NewUser)]) {
+                setIsFormValid(false);
+                return;
+            }
         }
+        setIsFormValid(true);
     };
+
+    const handleUpdatingUserData = (userData: User | NewUser) => {
+        setUserData(userData);
+        validateForm();
+    }
 
     return (
         <Dialog open={isOpen} onClose={onClose}>
             <DialogTitle>{user ? 'Edit User' : 'Add User'}</DialogTitle>
             <DialogContent className='dialog-form' style={{ paddingTop: '10px'}}>
-                <UserFormComponent userData={userData} updateUserData={setUserData} />
+                <UserFormComponent userData={userData} updateUserData={handleUpdatingUserData} isEdit={isEdit} />
             </DialogContent>
             <DialogActions id="dialog__actions">
                 <Button onClick={onClose} color="primary">
