@@ -40,7 +40,7 @@ const SnackbarComponent: React.FC<{snackbarData:SnackbarInterface}> = ({snackbar
                 TransitionComponent={Slide}
                 anchorOrigin={{vertical:'top',horizontal:'right'}}
                 open={open}
-                autoHideDuration={6000}
+                autoHideDuration={3000}
                 onClose={handleClose}
                 action={action}
             > 
