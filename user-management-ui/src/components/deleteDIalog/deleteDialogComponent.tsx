@@ -5,6 +5,8 @@ import { Button, Dialog, DialogTitle, DialogContent, DialogActions, DialogConten
 import { User } from '../../interfaces/users';
 import './deleteDialogComponent.scss';
 import { deleteUser } from '../../services/users';
+import { useSnackbar } from '../snackbar/snackbarContext';
+import { NotificationTypes } from '../../enums/notificationTypes.enum';
 
 interface UserDialogProps {
     isOpen: boolean;
@@ -13,11 +15,17 @@ interface UserDialogProps {
 }
 
 const DeleteDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
+    const { showSnackbar } = useSnackbar();
 
     // save user to db
     const handleDeleteUser = async () => {
-        await deleteUser(user.id!)
-        onClose();
+        try {
+            await deleteUser(user.id!);
+            showSnackbar('User successfully deleted', NotificationTypes.SUCCESS);
+            onClose();
+        } catch {
+            showSnackbar('Something went wrong, please try again', NotificationTypes.ERROR);
+        }
     };
 
 

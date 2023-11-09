@@ -6,6 +6,7 @@ import AuthGuard from './guards/AuthGuard';
 import { useEffect, useState } from 'react';
 import { isValidToken } from './services/login';
 import LoadingScreen from './components/loadingScreen/loadingScreenComponent';
+import { SnackbarProvider } from './components/snackbar/snackbarContext';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -34,24 +35,26 @@ function App() {
     }
 
     return (
-        <div className="App">
-            <Router>
-                <Routes>
-                    <Route></Route>
-                    <Route path="/overview" element={
-                        <AuthGuard isAuthenticated={isAuthenticated}>
-                            <UserTableComponent />
-                        </AuthGuard>
-                    } />
-                    <Route path="/login" element={<LoginComponent onAuthenticationSuccess={handleAuthentication}/>} />
-                    <Route path="/*" element={
-                        <AuthGuard isAuthenticated={isAuthenticated}>
-                            <UserTableComponent  />
-                        </AuthGuard>
-                    } />
-                </Routes>
-            </Router>
-        </div>
+        <SnackbarProvider>
+            <div className="App">
+                <Router>
+                    <Routes>
+                        <Route></Route>
+                        <Route path="/overview" element={
+                            <AuthGuard isAuthenticated={isAuthenticated}>
+                                <UserTableComponent />
+                            </AuthGuard>
+                        } />
+                        <Route path="/login" element={<LoginComponent onAuthenticationSuccess={handleAuthentication}/>} />
+                        <Route path="/*" element={
+                            <AuthGuard isAuthenticated={isAuthenticated}>
+                                <UserTableComponent  />
+                            </AuthGuard>
+                        } />
+                    </Routes>
+                </Router>
+            </div>
+        </SnackbarProvider>
     );
 }
 

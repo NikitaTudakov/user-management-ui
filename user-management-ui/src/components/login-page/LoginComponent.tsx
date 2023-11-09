@@ -6,12 +6,15 @@ import { NewUser, User } from '../../interfaces/users';
 import { LoginForm } from '../../interfaces/loginForm';
 import { login, register } from '../../services/login';
 import UserFormComponent from '../userForm/userFormComponent';
+import { useSnackbar } from '../snackbar/snackbarContext';
+import { NotificationTypes } from '../../enums/notificationTypes.enum';
 
 interface LoginComponentProps {
     onAuthenticationSuccess: (result: boolean) => void;
 }
 
 const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}) => {
+    const { showSnackbar } = useSnackbar();
     const [isRegisterFormValid, setIsRegisterFormValid] = useState<boolean>(false);
     const [isLoginFormValid, setIsLoginFormValid] = useState<boolean>(false);
     const [isLoginState, setLoginState] = useState<boolean>(true);
@@ -34,14 +37,26 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
     const handleLogin = () => {
         login(loginData).then((isLogin: boolean) => {
             onAuthenticationSuccess(isLogin);
-            isLogin && navigate('/overview')
+            if(isLogin) {
+                navigate('/overview');
+                showSnackbar('User successfully logged in', NotificationTypes.SUCCESS)
+                clearLoginForm();
+            } else {
+                showSnackbar('Wrong login or password', NotificationTypes.ERROR)
+            }
         })
     };
 
     const handleRegister = () => {
         register(userData).then((isLogin: boolean) => {
             onAuthenticationSuccess(isLogin);
-            isLogin && navigate('/overview')
+            if(isLogin) {
+                navigate('/overview');
+                showSnackbar('User successfully registered', NotificationTypes.SUCCESS)
+                clearRegisterForm();
+            } else {
+                showSnackbar('User already exists', NotificationTypes.ERROR)
+            }
         })
     };
 

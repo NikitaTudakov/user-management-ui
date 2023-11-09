@@ -25,6 +25,7 @@ const UserFormComponent: React.FC<UserFormProps<User | NewUser>> = ({ userData, 
             {!isEdit && <TextField
                 className='dialog-form__input'
                 label='Password'
+                type="password"
                 variant='outlined'
                 fullWidth
                 value={(userData as NewUser).password}
@@ -58,6 +59,7 @@ const UserFormComponent: React.FC<UserFormProps<User | NewUser>> = ({ userData, 
             <TextField
                 className='dialog-form__input'
                 label='Age'
+                type='number'
                 variant='outlined'
                 fullWidth
                 value={userData?.age || 0}
@@ -81,6 +83,7 @@ const UserFormComponent: React.FC<UserFormProps<User | NewUser>> = ({ userData, 
             <TextField
                 className='dialog-form__input'
                 label='Email'
+                type='email'
                 variant='outlined'
                 fullWidth
                 value={userData?.email || ''}

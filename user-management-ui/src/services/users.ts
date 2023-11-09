@@ -1,45 +1,24 @@
 import { User } from '../interfaces/users';
-import api, { apiSetHeader } from './api'
-
+import api from './api'
 
 // get all users
 export const getUsers = async () => {
-    try {
-        const response = await api.get(`/users`);
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching users:', error);
-    }
+    return api.get(`/users`);
 };
 
 // create new user
 export const createUser = async (user:User) => {
-    try {
-        const response = await api.post(`/users/new-user`, user);
-        return response.data;
-    } catch (error) {
-        console.error('Error while creating user:', error);
-    }
+    return await api.post(`/users/new-user`, user);
 };
 
 // update user by id
 export const updateUser = async (userId:string, user:User) => {
-    try {
-        const response = await api.put(`/users/${userId}`, user);
-        return response.data;
-    } catch (error) {
-        console.error('Error while updateing user data:', error);
-    }
+    return await api.put(`/users/${userId}`, user);
 };
 
 // delete user by id
 export const deleteUser = async (userId:string) => {
-    try {
-        const response = await api.delete(`/users/${userId}`);
-        return response.data;
-    } catch (error) {
-        console.error('Error while deleting user:', error);
-    }
+    return await api.delete(`/users/${userId}`);
 };
 
 

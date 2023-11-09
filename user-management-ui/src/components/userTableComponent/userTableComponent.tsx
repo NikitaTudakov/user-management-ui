@@ -6,6 +6,8 @@ import UserDialog from '../userDialog/userDialogComponent';
 import DeleteDialog from '../deleteDIalog/deleteDialogComponent';
 import { useNavigate } from 'react-router-dom';
 import { getUsers } from '../../services/users';
+import { NotificationTypes } from '../../enums/notificationTypes.enum';
+import { useSnackbar } from '../snackbar/snackbarContext';
 
 const UserTableComponent = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -13,6 +15,7 @@ const UserTableComponent = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const navigate = useNavigate();
+  const { showSnackbar } = useSnackbar();
 
   // get users on component mount
   useEffect(() => {
@@ -34,11 +37,11 @@ const UserTableComponent = () => {
   // get users from api
   const getTableUsers = () => {
     getUsers()
-      .then((data) => {
-        const sortedUsers = data.sort((a: User, b: User) => a.name.localeCompare(b.name));
+      .then((response) => {
+        const sortedUsers = response.data.sort((a: User, b: User) => a.name.localeCompare(b.name));
         setUsers(sortedUsers)
       })
-      .catch((error) => console.error('Error fetching users:', error));
+      .catch(() => showSnackbar('Something went wrong, please try again', NotificationTypes.ERROR));
   }
 
   // logout function

@@ -7,6 +7,8 @@ import { NewUser, User } from '../../interfaces/users';
 import './userDialogComponent.scss';
 import UserFormComponent from '../userForm/userFormComponent';
 import { createUser, updateUser } from '../../services/users';
+import { useSnackbar } from '../snackbar/snackbarContext';
+import { NotificationTypes } from '../../enums/notificationTypes.enum';
 
 interface UserDialogProps {
     isOpen: boolean;
@@ -15,6 +17,8 @@ interface UserDialogProps {
 }
 
 const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
+    const { showSnackbar } = useSnackbar();
+
     const [userData, setUserData] = useState<User | NewUser>(user ?? {
         login: '',
         password: '',
@@ -30,12 +34,18 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
 
     // save user to db
     const handleSave = async () => {
-        if(userData?.id) {
-            await updateUser(userData.id,userData as User);
-        } else {
-            await createUser(userData as User);
+        try {
+            if(userData?.id) {
+                await updateUser(userData.id,userData as User);
+                showSnackbar('User successfully updated', NotificationTypes.SUCCESS);
+            } else {
+                await createUser(userData as User);
+                showSnackbar('User successfully created', NotificationTypes.SUCCESS);
+            }
+            onClose();
+        } catch {
+            showSnackbar('Something went wrong, please try again', NotificationTypes.ERROR);
         }
-        onClose();
     };
 
     // validate form
