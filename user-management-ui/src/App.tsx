@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { isValidToken } from './services/login';
 import LoadingScreen from './components/loadingScreen/loadingScreenComponent';
 import { SnackbarProvider } from './components/snackbar/snackbarContext';
+import ForgotPasswordComponent from './components/forgot-password/forgotPasswordComponent';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -46,6 +47,7 @@ function App() {
                             </AuthGuard>
                         } />
                         <Route path="/login" element={<LoginComponent onAuthenticationSuccess={handleAuthentication}/>} />
+                        <Route path="/login/forgot-password" element={<ForgotPasswordComponent />} />
                         <Route path="/*" element={
                             <AuthGuard isAuthenticated={isAuthenticated}>
                                 <UserTableComponent  />

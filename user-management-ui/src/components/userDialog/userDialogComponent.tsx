@@ -24,7 +24,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
         password: '',
         name: '',
         surname: '',
-        age: 0,
+        age: null,
         phoneNumber: '',
         email: '',
     

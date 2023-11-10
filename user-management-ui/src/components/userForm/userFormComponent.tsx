@@ -1,6 +1,7 @@
 import React from 'react';
 import { TextField } from '@mui/material';
 import { NewUser, User } from '../../interfaces/users';
+import './userFormComponent.scss';
 
 interface UserFormProps<T> {
     userData: T;
@@ -10,7 +11,7 @@ interface UserFormProps<T> {
 
 const UserFormComponent: React.FC<UserFormProps<User | NewUser>> = ({ userData, updateUserData, isEdit }) => {
     return (
-        <>  
+        <form className='user-form'>  
             <TextField
                 className='dialog-form__input'
                 label='Login'
@@ -18,6 +19,7 @@ const UserFormComponent: React.FC<UserFormProps<User | NewUser>> = ({ userData, 
                 fullWidth
                 value={(userData as NewUser).login}
                 name='login'
+                required
                 onChange={(e) => {
                     updateUserData({ ...userData, login: e.target.value });
                 }}
@@ -30,6 +32,7 @@ const UserFormComponent: React.FC<UserFormProps<User | NewUser>> = ({ userData, 
                 fullWidth
                 value={(userData as NewUser).password}
                 name='password'
+                required
                 onChange={(e) => {
                     updateUserData({ ...userData, password: e.target.value });
                 }}
@@ -39,8 +42,9 @@ const UserFormComponent: React.FC<UserFormProps<User | NewUser>> = ({ userData, 
                 label='Name'
                 variant='outlined'
                 fullWidth
-                value={userData?.name || ''}
+                value={userData?.name}
                 name='name'
+                required
                 onChange={(e) => {
                     updateUserData({ ...userData, name: e.target.value });
                 }}
@@ -50,8 +54,9 @@ const UserFormComponent: React.FC<UserFormProps<User | NewUser>> = ({ userData, 
                 label='Surname'
                 variant='outlined'
                 fullWidth
-                value={userData?.surname || ''}
+                value={userData?.surname}
                 name='surname'
+                required
                 onChange={(e) => {
                     updateUserData({ ...userData, surname: e.target.value });
                 }}
@@ -62,9 +67,10 @@ const UserFormComponent: React.FC<UserFormProps<User | NewUser>> = ({ userData, 
                 type='number'
                 variant='outlined'
                 fullWidth
-                value={userData?.age || 0}
+                value={userData?.age}
                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                 name='age'
+                required
                 onChange={(e) => {
                     updateUserData({ ...userData, age: parseInt(e.target.value) });
                 }}
@@ -74,8 +80,9 @@ const UserFormComponent: React.FC<UserFormProps<User | NewUser>> = ({ userData, 
                 label='Phone Number'
                 variant='outlined'
                 fullWidth
-                value={userData?.phoneNumber || ''}
+                value={userData?.phoneNumber}
                 name='phoneNumber'
+                required
                 onChange={(e) => {
                     updateUserData({ ...userData, phoneNumber: e.target.value });
                 }}
@@ -86,13 +93,14 @@ const UserFormComponent: React.FC<UserFormProps<User | NewUser>> = ({ userData, 
                 type='email'
                 variant='outlined'
                 fullWidth
-                value={userData?.email || ''}
+                value={userData?.email}
                 name='email'
+                required
                 onChange={(e) => {
                     updateUserData({ ...userData, email: e.target.value });
                 }}
             />
-        </>
+        </form>
     );
 };
 

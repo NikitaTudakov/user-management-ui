@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './LoginComponent.scss';
 import { NewUser, User } from '../../interfaces/users';
 import { LoginForm } from '../../interfaces/loginForm';
@@ -27,7 +27,7 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
         password: '',
         name: '',
         surname: '',
-        age: 0,
+        age: null,
         phoneNumber: '',
         email: ''
     });
@@ -84,7 +84,7 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
             password: '',
             name: '',
             surname: '',
-            age: 0,
+            age: null,
             phoneNumber: '',
             email: ''
         });
@@ -113,10 +113,9 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
         <div className='container'>
             <div className='login-form'>   
                 <h2>{(isLoginState ? 'Login' : 'Register') + ' to test application'}</h2>
-
-
                 {isLoginState ?
-                    <><TextField
+                    <>
+                        <TextField
                             label="Login"
                             variant="outlined"
                             value={loginData.login}
@@ -130,13 +129,19 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
                             value={loginData.password}
                             name='password'
                             onChange={(e) => handleLoginInputChanges(e)}
-                        /></> 
+                        />
+                        <div className='forgot-password'>
+                            <Link to="forgot-password">Forgot Password?</Link>
+                        </div>
+                    </> 
                     :
-                        <><UserFormComponent
-                            userData={userData}
-                            updateUserData={handleRegisterInputChanges}
-                            isEdit={false}
-                        /></>  
+                        <>
+                            <UserFormComponent
+                                userData={userData}
+                                updateUserData={handleRegisterInputChanges}
+                                isEdit={false}
+                            />
+                        </>  
                 }
                 <div className='login-form__actions'>
                     {isLoginState ? 
