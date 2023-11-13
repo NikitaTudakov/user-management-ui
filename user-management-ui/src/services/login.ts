@@ -46,3 +46,11 @@ export const isValidToken = async (accessToken:string) => {
         return false
     }
 }
+
+export const forgotPassword =  (email:string) => {
+    return  api.post(`/auth/forgot-password`, {email});
+}
+
+export const resetPassword =  (password:string, token:string) => {
+    return  api.post(`/auth/reset-password`, {password, token});
+}

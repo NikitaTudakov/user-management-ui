@@ -8,15 +8,19 @@ import { isValidToken } from './services/login';
 import LoadingScreen from './components/loadingScreen/loadingScreenComponent';
 import { SnackbarProvider } from './components/snackbar/snackbarContext';
 import ForgotPasswordComponent from './components/forgot-password/forgotPasswordComponent';
+import ResetPasswordCompoennt from './components/reset-password/resetPasswordComponent';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const accessToken = localStorage.getItem('accessToken');
-        if(accessToken) {
-            isValidToken(accessToken).then((result) => {
+        const tokenFromParam = window.location.href.slice(window.location.href.indexOf('accessToken=') + 12);
+        tokenFromParam && localStorage.setItem('accessToken', tokenFromParam);
+        const storedAccessToken = localStorage.getItem('accessToken');
+
+        if(storedAccessToken) {
+            isValidToken(storedAccessToken).then((result) => {
                 setIsAuthenticated(result);
                 !result && localStorage.removeItem('accessToken');
                 setIsLoading(false);
@@ -46,8 +50,15 @@ function App() {
                                 <UserTableComponent />
                             </AuthGuard>
                         } />
-                        <Route path="/login" element={<LoginComponent onAuthenticationSuccess={handleAuthentication}/>} />
+                        <Route path="/login" element={
+                            <LoginComponent onAuthenticationSuccess={handleAuthentication}/>
+                        } />
                         <Route path="/login/forgot-password" element={<ForgotPasswordComponent />} />
+                        <Route path="/reset-password" element={
+                            <AuthGuard isAuthenticated={isAuthenticated}>
+                                <ResetPasswordCompoennt />
+                            </AuthGuard>
+                        }/>
                         <Route path="/*" element={
                             <AuthGuard isAuthenticated={isAuthenticated}>
                                 <UserTableComponent  />

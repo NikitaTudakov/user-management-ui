@@ -27,3 +27,17 @@ a:hover {
   min-height: 100vh;
   height: auto;
 }
+
+.password-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 320px;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
