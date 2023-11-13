@@ -2,7 +2,7 @@ import { Box, Button, Card,CardActions,CardContent,CardHeader, TextField, Typogr
 import React, { useState } from 'react';
 import { useSnackbar } from '../snackbar/snackbarContext';
 import { NotificationTypes } from '../../enums/notificationTypes.enum';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { resetPassword } from '../../services/login';
 
 const ResetPasswordCompoennt: React.FC = () => {
@@ -12,7 +12,7 @@ const ResetPasswordCompoennt: React.FC = () => {
     const [isShowPasswordError, setIsShowPasswordError] = useState<boolean>(false);
 
     const navigate = useNavigate();
-    let { accessToken } = useParams();
+    let [searchParams, setSearchParams] = useSearchParams();
     const {showSnackbar} = useSnackbar();
 
     const backToLogin = () => {
@@ -25,7 +25,7 @@ const ResetPasswordCompoennt: React.FC = () => {
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if(checkPasswordMatches()) {
-            resetPassword(passwordConfirm,accessToken || '').then(() => {
+            resetPassword(passwordConfirm,searchParams.get('accessToken') || '').then(() => {
                 setIsSubmitted(true);
                 showSnackbar('Password was reset successfully', NotificationTypes.SUCCESS);
             }).catch(() => {

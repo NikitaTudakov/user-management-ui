@@ -15,12 +15,12 @@ function App() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const tokenFromParam = window.location.href.slice(window.location.href.indexOf('accessToken=') + 12);
-        tokenFromParam && localStorage.setItem('accessToken', tokenFromParam);
+        const indexOfTokenFromParam = window.location.href.indexOf('accessToken=');
         const storedAccessToken = localStorage.getItem('accessToken');
+        const accesstoken = indexOfTokenFromParam > 0 ? window.location.href.slice(indexOfTokenFromParam+12) : storedAccessToken;
 
-        if(storedAccessToken) {
-            isValidToken(storedAccessToken).then((result) => {
+        if(accesstoken) {
+            isValidToken(accesstoken).then((result) => {
                 setIsAuthenticated(result);
                 !result && localStorage.removeItem('accessToken');
                 setIsLoading(false);
