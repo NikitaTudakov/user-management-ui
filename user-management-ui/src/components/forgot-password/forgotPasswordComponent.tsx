@@ -4,18 +4,23 @@ import { useNavigate } from 'react-router-dom';
 import { forgotPassword } from '../../services/login';
 import { useSnackbar } from '../snackbar/snackbarContext';
 import { NotificationTypes } from '../../enums/notificationTypes.enum';
+import { useLinearProgress } from '../linear-loading-spinner/linearProgressSpinnerContext';
 
 const ForgotPasswordComponent: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const navigate = useNavigate();
     const {showSnackbar} = useSnackbar();
+    const { setLoading } = useLinearProgress();
     
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoading(true);
         forgotPassword(email).then(() => {
+            setLoading(false);
             setIsSubmitted(true);
         }).catch(() => {
+            setLoading(false);
             showSnackbar('Something went wrong, please try again', NotificationTypes.ERROR)
         });
     }

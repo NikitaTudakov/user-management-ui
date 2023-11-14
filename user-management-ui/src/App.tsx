@@ -9,6 +9,7 @@ import LoadingScreen from './components/loadingScreen/loadingScreenComponent';
 import { SnackbarProvider } from './components/snackbar/snackbarContext';
 import ForgotPasswordComponent from './components/forgot-password/forgotPasswordComponent';
 import ResetPasswordCompoennt from './components/reset-password/resetPasswordComponent';
+import { LinearProgressProvider } from './components/linear-loading-spinner/linearProgressSpinnerContext';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -40,34 +41,36 @@ function App() {
     }
 
     return (
-        <SnackbarProvider>
-            <div className="App">
-                <Router>
-                    <Routes>
-                        <Route></Route>
-                        <Route path="/overview" element={
-                            <AuthGuard isAuthenticated={isAuthenticated}>
-                                <UserTableComponent />
-                            </AuthGuard>
-                        } />
-                        <Route path="/login" element={
-                            <LoginComponent onAuthenticationSuccess={handleAuthentication}/>
-                        } />
-                        <Route path="/login/forgot-password" element={<ForgotPasswordComponent />} />
-                        <Route path="/reset-password" element={
-                            <AuthGuard isAuthenticated={isAuthenticated}>
-                                <ResetPasswordCompoennt />
-                            </AuthGuard>
-                        }/>
-                        <Route path="/*" element={
-                            <AuthGuard isAuthenticated={isAuthenticated}>
-                                <UserTableComponent  />
-                            </AuthGuard>
-                        } />
-                    </Routes>
-                </Router>
-            </div>
-        </SnackbarProvider>
+        <LinearProgressProvider>
+            <SnackbarProvider>
+                <div className="App">
+                    <Router>
+                        <Routes>
+                            <Route></Route>
+                            <Route path="/overview" element={
+                                <AuthGuard isAuthenticated={isAuthenticated}>
+                                    <UserTableComponent />
+                                </AuthGuard>
+                            } />
+                            <Route path="/login" element={
+                                <LoginComponent onAuthenticationSuccess={handleAuthentication}/>
+                            } />
+                            <Route path="/login/forgot-password" element={<ForgotPasswordComponent />} />
+                            <Route path="/reset-password" element={
+                                <AuthGuard isAuthenticated={isAuthenticated}>
+                                    <ResetPasswordCompoennt />
+                                </AuthGuard>
+                            }/>
+                            <Route path="/*" element={
+                                <AuthGuard isAuthenticated={isAuthenticated}>
+                                    <UserTableComponent  />
+                                </AuthGuard>
+                            } />
+                        </Routes>
+                    </Router>
+                </div>
+            </SnackbarProvider>
+        </LinearProgressProvider>
     );
 }
 

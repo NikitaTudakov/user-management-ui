@@ -9,6 +9,7 @@ import UserFormComponent from '../userForm/userFormComponent';
 import { createUser, updateUser } from '../../services/users';
 import { useSnackbar } from '../snackbar/snackbarContext';
 import { NotificationTypes } from '../../enums/notificationTypes.enum';
+import { useLinearProgress } from '../linear-loading-spinner/linearProgressSpinnerContext';
 
 interface UserDialogProps {
     isOpen: boolean;
@@ -18,6 +19,7 @@ interface UserDialogProps {
 
 const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
     const { showSnackbar } = useSnackbar();
+    const { setLoading } = useLinearProgress();
 
     const [userData, setUserData] = useState<User | NewUser>(user ?? {
         login: '',
@@ -35,6 +37,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
     // save user to db
     const handleSave = async () => {
         try {
+            setLoading(true);
             if(userData?.id) {
                 await updateUser(userData.id,userData as User);
                 showSnackbar('User successfully updated', NotificationTypes.SUCCESS);
@@ -42,8 +45,10 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
                 await createUser(userData as User);
                 showSnackbar('User successfully created', NotificationTypes.SUCCESS);
             }
+            setLoading(false);
             onClose();
         } catch {
+            setLoading(false);
             showSnackbar('Something went wrong, please try again', NotificationTypes.ERROR);
         }
     };
@@ -65,7 +70,12 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
     }
 
     return (
-        <Dialog open={isOpen} onClose={onClose}>
+        <Dialog
+            open={isOpen}
+            onClose={onClose}
+            fullWidth
+            maxWidth="sm"
+        >
             <DialogTitle>{user ? 'Edit User' : 'Add User'}</DialogTitle>
             <DialogContent className='dialog-form' style={{ paddingTop: '10px'}}>
                 <UserFormComponent userData={userData} updateUserData={handleUpdatingUserData} isEdit={isEdit} />

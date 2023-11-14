@@ -4,6 +4,7 @@ import { useSnackbar } from '../snackbar/snackbarContext';
 import { NotificationTypes } from '../../enums/notificationTypes.enum';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { resetPassword } from '../../services/login';
+import { useLinearProgress } from '../linear-loading-spinner/linearProgressSpinnerContext';
 
 const ResetPasswordCompoennt: React.FC = () => {
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
@@ -13,7 +14,8 @@ const ResetPasswordCompoennt: React.FC = () => {
 
     const navigate = useNavigate();
     let [searchParams, setSearchParams] = useSearchParams();
-    const {showSnackbar} = useSnackbar();
+    const { showSnackbar } = useSnackbar();
+    const { setLoading } = useLinearProgress();
 
     const backToLogin = () => {
         navigate('/login');
@@ -25,10 +27,13 @@ const ResetPasswordCompoennt: React.FC = () => {
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if(checkPasswordMatches()) {
+            setLoading(true);
             resetPassword(passwordConfirm,searchParams.get('accessToken') || '').then(() => {
+                setLoading(false);
                 setIsSubmitted(true);
                 showSnackbar('Password was reset successfully', NotificationTypes.SUCCESS);
             }).catch(() => {
+                setLoading(false);
                 showSnackbar('Something went wrong, please try again', NotificationTypes.ERROR)
             })
         } else {

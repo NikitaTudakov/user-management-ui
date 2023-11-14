@@ -8,6 +8,7 @@ import { login, register } from '../../services/login';
 import UserFormComponent from '../userForm/userFormComponent';
 import { useSnackbar } from '../snackbar/snackbarContext';
 import { NotificationTypes } from '../../enums/notificationTypes.enum';
+import { useLinearProgress } from '../linear-loading-spinner/linearProgressSpinnerContext';
 
 interface LoginComponentProps {
     onAuthenticationSuccess: (result: boolean) => void;
@@ -15,6 +16,7 @@ interface LoginComponentProps {
 
 const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}) => {
     const { showSnackbar } = useSnackbar();
+    const { setLoading } = useLinearProgress();
     const [isRegisterFormValid, setIsRegisterFormValid] = useState<boolean>(false);
     const [isLoginFormValid, setIsLoginFormValid] = useState<boolean>(false);
     const [isLoginState, setLoginState] = useState<boolean>(true);
@@ -35,7 +37,9 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
 
     //handle login function
     const handleLogin = () => {
+        setLoading(true);
         login(loginData).then((isLogin: boolean) => {
+            setLoading(false);
             onAuthenticationSuccess(isLogin);
             if(isLogin) {
                 navigate('/overview');
@@ -48,7 +52,9 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
     };
 
     const handleRegister = () => {
+        setLoading(true);
         register(userData).then((isLogin: boolean) => {
+            setLoading(false);
             onAuthenticationSuccess(isLogin);
             if(isLogin) {
                 navigate('/overview');
