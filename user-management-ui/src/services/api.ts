@@ -1,9 +1,10 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3001'; 
+const baseLocalURL = 'http://localhost:3001';
+const baseProdUrl = 'https://us-central1-user-management-ab316.cloudfunctions.net/api'
 
 
-const api = axios.create({baseURL});
+const api = axios.create({baseURL:baseProdUrl});
 
 export function apiSetHeader (name: string, value: string) {
   if (value) {
