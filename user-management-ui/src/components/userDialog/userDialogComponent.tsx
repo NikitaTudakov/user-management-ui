@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 import { NewUser, User } from '../../interfaces/users';
 

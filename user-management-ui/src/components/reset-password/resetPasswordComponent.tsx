@@ -2,7 +2,7 @@ import { Box, Button, Card,CardActions,CardContent,CardHeader, TextField, Typogr
 import React, { useState } from 'react';
 import { useSnackbar } from '../snackbar/snackbarContext';
 import { NotificationTypes } from '../../enums/notificationTypes.enum';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { resetPassword } from '../../services/login';
 import { useLinearProgress } from '../linear-loading-spinner/linearProgressSpinnerContext';
 
