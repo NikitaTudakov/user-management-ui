@@ -19,7 +19,7 @@ interface UserDialogProps {
 
 const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
     const { showSnackbar } = useSnackbar();
-    const { setLoading } = useLinearProgress();
+    const { loading,setLoading } = useLinearProgress();
 
     const [userData, setUserData] = useState<User | NewUser>(user ?? {
         login: '',
@@ -81,13 +81,17 @@ const UserDialog: React.FC<UserDialogProps> = ({ isOpen, onClose, user }) => {
                 <UserFormComponent userData={userData} updateUserData={handleUpdatingUserData} isEdit={isEdit} />
             </DialogContent>
             <DialogActions id="dialog__actions">
-                <Button onClick={onClose} color="primary">
+                <Button
+                    onClick={onClose}
+                    color="primary"
+                    disabled={loading}
+                >
                     Cancel
                 </Button>
                 <Button
                     onClick={handleSave}
                     color="primary"
-                    disabled={!isFormValid}
+                    disabled={!isFormValid || loading}
                 >
                     Save
                 </Button>

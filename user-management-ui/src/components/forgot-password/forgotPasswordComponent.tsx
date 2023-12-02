@@ -11,7 +11,7 @@ const ForgotPasswordComponent: React.FC = () => {
     const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
     const navigate = useNavigate();
     const {showSnackbar} = useSnackbar();
-    const { setLoading } = useLinearProgress();
+    const { loading,setLoading } = useLinearProgress();
     
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -55,11 +55,21 @@ const ForgotPasswordComponent: React.FC = () => {
                         )}
                     </CardContent>
                     <CardActions sx={{padding: '8px 16px', justifyContent: 'end'}}>
-                            <Button variant="outlined" color="primary" onClick={backToLogin}>
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                onClick={backToLogin}
+                                disabled={loading}
+                            >
                                 Back to Login
                             </Button>
                         {!isSubmitted && 
-                            <Button type="submit" variant="contained" color="primary">
+                            <Button 
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                disabled={loading}
+                            >
                                 Send Reset Instructions
                             </Button>
                         }

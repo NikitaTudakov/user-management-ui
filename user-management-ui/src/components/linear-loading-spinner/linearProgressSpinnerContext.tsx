@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, ReactNode } from 'react';
 import LinearProgressSpinner from './linearProgressSpinnerComponent';
 
 interface ProgressContextProps {
+    loading: boolean;
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -23,7 +24,7 @@ export const LinearProgressProvider: React.FC<ProgressProviderProps> = ({ childr
   const [loading, setLoading] = useState(false);
 
   return (
-    <LinearProgressContext.Provider value={{ setLoading }}>
+    <LinearProgressContext.Provider value={{ loading,setLoading }}>
       {loading && <LinearProgressSpinner />}
       {children}
     </LinearProgressContext.Provider>

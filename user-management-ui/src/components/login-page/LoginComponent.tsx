@@ -16,7 +16,7 @@ interface LoginComponentProps {
 
 const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}) => {
     const { showSnackbar } = useSnackbar();
-    const { setLoading } = useLinearProgress();
+    const { loading,setLoading } = useLinearProgress();
     const [isRegisterFormValid, setIsRegisterFormValid] = useState<boolean>(false);
     const [isLoginFormValid, setIsLoginFormValid] = useState<boolean>(false);
     const [isLoginState, setLoginState] = useState<boolean>(true);
@@ -151,7 +151,10 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
                 }
                 <div className='login-form__actions'>
                     {isLoginState ? 
-                        <Button variant="outlined" color="primary" 
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            disabled={loading}
                             onClick={() => {
                                 setLoginState(false)
                                 clearLoginForm();
@@ -160,7 +163,10 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
                             Register
                         </Button>
                         :
-                        <Button variant="outlined" color="primary"
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            disabled={loading}
                             onClick={() => {
                                 setLoginState(true);
                                 clearRegisterForm();
@@ -173,7 +179,7 @@ const LoginComponent: React.FC<LoginComponentProps> = ({onAuthenticationSuccess}
                         variant="contained"
                         color="primary"
                         onClick={isLoginState ? handleLogin : handleRegister}
-                        disabled={isLoginState ? !isLoginFormValid : !isRegisterFormValid}
+                        disabled={(isLoginState ? !isLoginFormValid : !isRegisterFormValid) || loading}
                     >
                         {isLoginState ? 'Log in' : 'Register'}
                     </Button>

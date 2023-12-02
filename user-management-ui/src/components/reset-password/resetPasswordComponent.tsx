@@ -15,7 +15,7 @@ const ResetPasswordCompoennt: React.FC = () => {
     const navigate = useNavigate();
     let [searchParams, setSearchParams] = useSearchParams();
     const { showSnackbar } = useSnackbar();
-    const { setLoading } = useLinearProgress();
+    const { loading,setLoading } = useLinearProgress();
 
     const backToLogin = () => {
         navigate('/login');
@@ -93,7 +93,12 @@ const ResetPasswordCompoennt: React.FC = () => {
                     </CardContent>
                     <CardActions sx={{padding: '8px 16px', justifyContent: 'end'}}>
                         {isSubmitted ? (
-                            <Button variant="outlined" color="primary" onClick={backToLogin}>
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                onClick={backToLogin}
+                                disabled={loading}
+                            >
                                 Back to Login
                             </Button>
                         ) : (
@@ -101,7 +106,7 @@ const ResetPasswordCompoennt: React.FC = () => {
                                 type="submit"
                                 variant="contained"
                                 color="primary"
-                                disabled={!password || !passwordConfirm || isShowPasswordError}
+                                disabled={!password || !passwordConfirm || isShowPasswordError || loading}
                             >
                                 Reset
                             </Button>
